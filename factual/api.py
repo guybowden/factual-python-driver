@@ -6,7 +6,7 @@ import json
 from urllib import urlencode
 
 import requests
-from rauth.hook import OAuth1Hook
+from requests_oauthlib import OAuth1
 
 from query import Resolve, Table, Submit, Insert, Facets, Flag, Geopulse, Geocode, Diffs, Match, Multi, Clear
 
@@ -70,13 +70,14 @@ class Factual(object):
         return Multi(self.api, queries).make_request()
 
     def _generate_token(self, key, secret):
-        access_token = OAuth1Hook(consumer_key=key, consumer_secret=secret, header_auth=True)
+        access_token = OAuth1(key, secret)
         return access_token
 
 
 class API(object):
     def __init__(self, access_token, timeout):
-        self.client = requests.session(hooks={'pre_request': access_token}, prefetch=False, timeout=timeout)
+        self.client = requests.Session()
+        self.client.auth = access_token
 
     def get(self, query):
         response = self._handle_request(query.path, query.params, self._make_get_request)
