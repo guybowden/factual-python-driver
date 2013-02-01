@@ -1,6 +1,7 @@
 from setuptools import setup, find_packages
 
-required = ['requests == 1.1.0', 'git+git://github.com/requests/requests-oauthlib.git']
+required = ['requests == 1.1.0',]
+# 'git+git://github.com/requests/requests-oauthlib.git']
 
 setup(
     author='Factual Driver Team',
